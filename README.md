@@ -36,3 +36,11 @@ from any reasonable Linux distro; or after installing MinGW from windows too. Th
 from Linux (add user to dialout grout to access serial ports) or
 * readout -c COM5 
 from Windows.
+
+## WEB APPLICATION
+
+1. Python 3 i required to run web application
+
+2. Install requirements: pip install -r requirements.txt
+
+3. Run web application: python run.py

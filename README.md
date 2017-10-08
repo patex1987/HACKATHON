@@ -39,7 +39,7 @@ from Windows.
 
 ## WEB APPLICATION
 
-1. Python 3 i required to run web application
+1. Python3 is required to run web application
 
 2. Install requirements: pip install -r requirements.txt
 

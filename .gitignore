@@ -99,3 +99,12 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# personal
+flask/venv/
+flask/.idea
+flask/__pycache__
+flask/app/__pycache__
+.ipynb_checkpoints
+data/
+amazon/

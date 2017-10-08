@@ -41,6 +41,6 @@ from Windows.
 
 1. Python3 is required to run web application
 
-2. Install requirements: pip install -r requirements.txt
+2. Install requirements: `pip install -r requirements.txt`
 
-3. Run web application: python run.py
+3. Run web application: `python run.py`

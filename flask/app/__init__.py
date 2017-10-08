@@ -26,7 +26,7 @@ app.config.from_object("config")
 
 # thread results
 global thread_result
-thread_result = 0
+thread_result = []
 
 
 @app.route("/")
@@ -48,15 +48,23 @@ def start_predictions():
 @app.route("/get-predictions", methods=["GET"])
 def get_predictions():
 
-    if thread_result == -1:
-        return jsonify(status="ERROR", data="/")
-    elif thread_result == 0:
-        return jsonify(status="OK", data="/")
-    else:
-        if thread_result is not None:
-            predicted_device_img = app.config["DICT_DEVICES_IMGS"][thread_result]
+    if thread_result:
+        if thread_result[-1] == "Error":
+            return jsonify(status="ERROR", device_type="", device_img="/")
+        elif thread_result[-1] == "None":
+            return jsonify(status="OK", device_type="", device_img="/")
+        else:
+            device_prediction = thread_result[-1]
 
-            return jsonify(status="OK", data='<div class="device-img-wrapper mt-3"><img class="device-img" src=' + url_for("static", filename="media/" + predicted_device_img) + '></div>')
+            if device_prediction is not None:
+                predicted_device_img = app.config["DICT_DEVICES_IMGS"][device_prediction]
+                predicted_device_type = app.config["DICT_DEVICES_NAMES"][device_prediction]
+
+                return jsonify(status="OK",
+                               device_type=predicted_device_type,
+                               device_img='<div class="device-img-wrapper mt-3"><img class="device-img" src=' + url_for("static", filename="media/" + predicted_device_img) + '></div>')
+    else:
+        return jsonify(status="OK", device_type="", device_img="/")
 
 
 def get_predict_device():
@@ -77,12 +85,16 @@ def get_predict_device():
             test_set = [int(output_seq[i]) for i in (1, 2, 3, 4, 6, 8)]
 
             if test_set[0] < 2:
-                thread_result = 0
+                prediction = "None"
             else:
-                thread_result = ''.join(clf.predict(np.array([test_set])))
+                prediction = ''.join(clf.predict(np.array([test_set])))
 
         except Exception as e:
             print(e)
-            thread_result = -1
+            prediction = "Error"
+
+        print("Thread results: " + prediction)
+
+        thread_result.append(prediction)
 
         sleep(3)

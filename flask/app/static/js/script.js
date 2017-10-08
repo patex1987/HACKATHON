@@ -9,6 +9,8 @@ function startScanning() {
             $('#progress-wrapper').fadeOut(250);
 
             if (response["status"] == "OK") {
+                $('#btn-start-scanning').text("scanning...")
+                $("#btn-start-scanning").prop("disabled", true);
                 showAlert("success", "Successfully started scanner for predicting device types");
 
                 setTimeout(function() {
@@ -27,20 +29,29 @@ function startScanning() {
 function updatePrediction() {
     $.getJSON("/get-predictions", function(response) {
         var htmlData = [];
-        htmlData += '<h3 class="text-center">Prediction</h3>';
-        htmlData += '<div id="prediction-img">';
 
         if (response["status"] == "OK") {
-            if (response["data"] == "/")
-                htmlData += '<p class="empty-prediction text-center mt-5">No prediction could be found for any device</p>';
-            else
-                htmlData += response["data"];
-        } else
-            htmlData += '<p class="error-prediction text-center mt-5">Failed to predict device that is running or not</p>';
+            if (response["device_img"] == "/") {
+                htmlData += '<h4 class="text-center">Predicted device</h4>';
+                htmlData += '<div id="prediction-img">';
+                htmlData += '<p class="empty-prediction text-center mt-4">No device prediction could be found</p>';
+            }
+
+            else {
+                htmlData += '<h4 class="text-center">Predicted device<br>' + response["device_type"] + '</h4>';
+                htmlData += '<div id="prediction-img">';
+                htmlData += response["device_img"];
+            }
+        } else {
+            htmlData += '<h4 class="text-center">Predicted device</h4>';
+            htmlData += '<div id="prediction-img">';
+            htmlData += '<p class="error-prediction text-center mt-4">Failed to predict device</p>';
+        }
 
         htmlData += '</div>';
 
         $('#prediction-data').html(htmlData);
+        $('#prediction-data').fadeIn(250);
 
         setTimeout(function() {
             updatePrediction();

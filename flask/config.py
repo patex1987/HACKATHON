@@ -11,3 +11,10 @@ DICT_DEVICES_IMGS = {
     "lightbulb": "device_light_bulb.jpg",
     "hair": "device_hair_dryer.jpg"
 }
+
+DICT_DEVICES_NAMES = {
+    "led": "LED",
+    "ps": "Power supply",
+    "lightbulb": "Light bulb",
+    "hair": "Hair dryer"
+}
